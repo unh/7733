@@ -21,12 +21,12 @@
 	<?php echo CHtml::encode($data->last_name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('birthday')); ?>:</b>
-	<?php echo CHtml::encode($data->birthday); ?>
+	<b><?php echo CHtml::encode($data->street->getAttributeLabel('city_id')); ?>:</b>
+	<?php echo CHtml::encode($data->street->city->name); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('street_id')); ?>:</b>
-	<?php echo CHtml::encode($data->street_id); ?>
+	<?php echo CHtml::encode($data->street->name); ?>
 	<br />
 
 
