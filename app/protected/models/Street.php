@@ -36,11 +36,11 @@ class Street extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, city_id, name', 'required'),
-			array('id, city_id', 'numerical', 'integerOnly' => true),
+			array('city_id, name', 'required'),
+			array('city_id', 'numerical', 'integerOnly' => true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, city_id, name', 'safe', 'on'=>'search'),
+			array('city_id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +79,7 @@ class Street extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		//$criteria->compare('id',$this->id);
 		$criteria->compare('city_id',$this->city_id);
 		$criteria->compare('name',$this->name,true);
 

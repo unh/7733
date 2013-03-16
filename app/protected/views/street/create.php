@@ -1,15 +1,12 @@
 <?php
-/* @var $this StreetController */
-/* @var $model Street */
-
 $this->breadcrumbs=array(
 	'Streets'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Street', 'url'=>array('index')),
-	array('label'=>'Manage Street', 'url'=>array('admin')),
+	array('label'=>'List Street','url'=>array('index')),
+	array('label'=>'Manage Street','url'=>array('admin')),
 );
 ?>
 

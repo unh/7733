@@ -1,20 +1,29 @@
 <?php
-/* @var $this CityController */
-/* @var $dataProvider CActiveDataProvider */
-
 $this->breadcrumbs=array(
 	'Cities',
 );
 
 $this->menu=array(
-	array('label'=>'Create City', 'url'=>array('create')),
-	array('label'=>'Manage City', 'url'=>array('admin')),
+	array('label'=>'Create City','url'=>array('create')),
+	array('label'=>'Manage City','url'=>array('admin')),
 );
 ?>
 
 <h1>Cities</h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
+)); ?>
+<?php $this->widget('bootstrap.widgets.TbGridView',array(
+    'id'=>'city-grid',
+    'dataProvider'=>$dataProvider,
+//    'filter'=>$model,
+    'columns'=>array(
+        'id',
+        'name',
+        array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+        ),
+    ),
 )); ?>
