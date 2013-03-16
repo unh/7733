@@ -61,7 +61,6 @@ return array(
 		),
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-            //'charset' => 'utf8',
 		),
 		// uncomment the following to use a MySQL database
 		/*
