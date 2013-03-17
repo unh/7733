@@ -29,5 +29,9 @@
 	<?php echo CHtml::encode($data->street->name); ?>
 	<br />
 
+    <b><?php echo CHtml::encode($data->getAttributeLabel('phone')); ?>:</b>
+    <?php echo CHtml::encode($data->phone); ?>
+    <br />
+
 
 </div>

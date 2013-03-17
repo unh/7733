@@ -52,6 +52,7 @@ $('.search-form form').submit(function(){
         'birthday',
         array('name' => 'street_search', 'value' => '$data->street->name' ),
         array('name' => 'city_search', 'value' => '$data->street->city->name' ),
+        'phone',
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
         ),

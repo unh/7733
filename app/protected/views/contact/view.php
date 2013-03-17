@@ -34,5 +34,6 @@ $this->menu=array(
             'label'=>$model->getAttributeLabel('street_id'),
             'value'=>$model->street->name,
         ),
+        'phone'
     ),
 )); ?>

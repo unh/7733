@@ -45,6 +45,7 @@
         echo $form->hiddenField($model, 'street_id', array('class'=>'span3'));
     ?>
 
+    <?php echo $form->textFieldRow($model, 'phone', array('class'=>'span3')); ?>
     <div class="form-actions">
     <?php $this->widget(
         'bootstrap.widgets.TbButton',

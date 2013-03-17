@@ -16,7 +16,8 @@ CREATE TABLE [contacts] (
 CREATE TABLE [streets] (
   [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
   [city_id] INT NOT NULL, 
-  [name] text NOT NULL);
+  [name] text NOT NULL
+);
 
 
 CREATE TABLE tbl_user (

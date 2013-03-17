@@ -41,6 +41,11 @@
 		<?php echo $form->textField($model,'street_id'); ?>
 	</div>
 
+    <div class="row">
+        <?php echo $form->label($model,'phone'); ?>
+        <?php echo $form->textField($model,'phone'); ?>
+    </div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

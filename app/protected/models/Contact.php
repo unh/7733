@@ -9,6 +9,7 @@
  * @property string $second_name
  * @property string $last_name
  * @property string $birthday
+ * @property string $phone
  * @property integer $street_id
  */
 class Contact extends CActiveRecord
@@ -40,9 +41,10 @@ class Contact extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, second_name, last_name, birthday, street_id', 'required'),
+			array('name, second_name, last_name, birthday, street_id, phone', 'required'),
 			array('street_id', 'numerical', 'integerOnly'=>true),
             array('birthday', 'type', 'type' => 'date', 'message' => '{attribute}: is not a date!', 'dateFormat' => 'dd.MM.yyyy'),
+            array('phone', 'length', 'max'=>15),
 			array('name, second_name, last_name', 'length', 'max'=>255),
             array('street_search, city_search', 'safe', 'on' => 'search'),
 
@@ -76,6 +78,7 @@ class Contact extends CActiveRecord
 			'last_name' => 'Last Name',
 			'birthday' => 'Birthday',
 			'street_id' => 'Street',
+            'phone' => 'Phone'
 		);
 	}
 
@@ -98,6 +101,7 @@ class Contact extends CActiveRecord
 		$criteria->compare('birthday',$this->birthday,true);
 		$criteria->compare('street.name',$this->street_search, true);
         $criteria->compare('street.city.name',$this->city_search, true);
+        $criteria->compare('phone',$this->phone, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
