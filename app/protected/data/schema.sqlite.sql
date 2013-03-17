@@ -10,7 +10,9 @@ CREATE TABLE [contacts] (
   [second_name] VARCHAR(255) NOT NULL, 
   [last_name] VARCHAR(255) NOT NULL, 
   [birthday] DATE NOT NULL, 
-  [street_id] INT NOT NULL);
+  [street_id] INT NOT NULL,
+  [phone] VARCHAR(15) NOT NULL
+);
 
 
 CREATE TABLE [streets] (
