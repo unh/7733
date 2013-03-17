@@ -43,8 +43,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'city_id',
-		'name',
+        array('name' => 'city_search', 'value' => '$data->city->name' ),
+        array('name' => 'name', 'value' => '$data->name' ),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),

@@ -17,9 +17,23 @@
     <?php echo $form->textFieldRow($model, 'last_name', array('class'=>'span3')); ?>
     <?php
         echo $form->labelEx($model, 'birthday');
-        echo $form->dateField($model, 'birthday', array('class'=>'span2'));
-    ?>
+        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+            'name'      => 'date_start',
+            'attribute' => 'birthday',
+            'model'     => $model,
+            'options'   => array(
+                'dateFormat'  => 'dd.mm.yy',
+                'changeMonth' => true,
+                'changeYear'  => true,
+                'minDate'     =>  "-100Y",
+                'maxDate'     => date('d.m.Y')
+            ),
+            'htmlOptions' => array('class'=>'span3'),
+        ));
+        //echo $form->dateField($model, 'birthday', array('class'=>'span2'));
 
+    ?>
+    <?php ?>
     <?php
         echo CHtml::label('City', 'city');
         echo CHtml::dropDownList('city', '', CHtml::listData(City::model()->findAll(), 'id', 'name'));

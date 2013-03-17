@@ -13,6 +13,7 @@
  */
 class Contact extends CActiveRecord
 {
+    public $city_search, $street_search;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -41,7 +42,10 @@ class Contact extends CActiveRecord
 		return array(
 			array('name, second_name, last_name, birthday, street_id', 'required'),
 			array('street_id', 'numerical', 'integerOnly'=>true),
+            array('birthday', 'type', 'type' => 'date', 'message' => '{attribute}: is not a date!', 'dateFormat' => 'dd.MM.yyyy'),
 			array('name, second_name, last_name', 'length', 'max'=>255),
+            array('street_search, city_search', 'safe', 'on' => 'search'),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, second_name, last_name, birthday, street_id', 'safe', 'on'=>'search'),
@@ -85,16 +89,31 @@ class Contact extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
+        $criteria->with = array('street', 'street.city');
 
-		$criteria->compare('id',$this->id);
+        $criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('second_name',$this->second_name,true);
 		$criteria->compare('last_name',$this->last_name,true);
 		$criteria->compare('birthday',$this->birthday,true);
-		$criteria->compare('street_id',$this->street_id);
+		$criteria->compare('street.name',$this->street_search, true);
+        $criteria->compare('street.city.name',$this->city_search, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            'sort'=>array(
+                'attributes'=>array(
+                    'city_search'=>array(
+                        'asc'=>'street.city.name',
+                        'desc'=>'street.city.name DESC',
+                    ),
+                    'street_search'=>array(
+                        'asc'=>'street.name',
+                        'desc'=>'street.name DESC',
+                    ),
+                    '*',
+                ),
+            ),
 		));
 	}
 }
