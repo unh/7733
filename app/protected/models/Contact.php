@@ -14,7 +14,7 @@
  */
 class Contact extends CActiveRecord
 {
-    public $city_search, $street_search;
+    public $city_search, $street_search, $fio, $city_id_search;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -46,7 +46,7 @@ class Contact extends CActiveRecord
             array('birthday', 'type', 'type' => 'date', 'message' => '{attribute}: is not a date!', 'dateFormat' => 'dd.MM.yyyy'),
             array('phone', 'length', 'max'=>15),
 			array('name, second_name, last_name', 'length', 'max'=>255),
-            array('street_search, city_search', 'safe', 'on' => 'search'),
+            array('street_search, city_search, city_id_search, fio', 'safe', 'on' => 'search'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -78,7 +78,10 @@ class Contact extends CActiveRecord
 			'last_name' => 'Last Name',
 			'birthday' => 'Birthday',
 			'street_id' => 'Street',
-            'phone' => 'Phone'
+            'phone' => 'Phone',
+            'city_id_search' => 'City',
+            'city_search' => 'City',
+            'street_search' => 'Street',
 		);
 	}
 
@@ -120,4 +123,92 @@ class Contact extends CActiveRecord
             ),
 		));
 	}
+
+    /**
+     * Search by FIO
+     * Generates all permutations of first three parts of input string/
+     * @return CActiveDataProvider
+     */
+    public function searchFio()
+    {
+        if (strlen($this->fio) > 0) {
+            $nameParts = explode(' ', $this->fio);
+            $nameAttributes = array('t.name', 'second_name', 'last_name');
+            sort($nameAttributes);
+            $lastQ = false;
+            $j = 0;
+            do {
+                $q = new CDbCriteria;
+
+                foreach ($nameAttributes as $i => $attr) {
+                    if ($i + 1 > count($nameParts))
+                        continue;
+                    $q->compare("$attr", $nameParts[$i], true);
+                    //$q->addCondition("lower($attr) LIKE '%' + lower(:attr$j)+ '%' ");
+                    //$q->params[":attr$j"] = $nameParts[$i];
+                    //print_r($q->params);
+                    $j++;
+                }
+
+                if ($lastQ) {
+                    $q->mergeWith($lastQ, 'OR');
+                }
+                $lastQ = $q;
+            } while ($this->__nextPermutation($nameAttributes, 2));
+        }
+
+        $criteria=new CDbCriteria;
+        if (isset($q)) {
+            $criteria->mergeWith($q);
+        }
+        $criteria->with = array('street', 'street.city');
+        $criteria->compare('phone',$this->phone, true);
+        $criteria->compare('street.city_id',$this->city_id_search, true);
+
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'sort'=>array(
+                'attributes'=>array(
+                    'city_search'=>array(
+                        'asc'=>'street.city.name',
+                        'desc'=>'street.city.name DESC',
+                    ),
+                    'street_search'=>array(
+                        'asc'=>'street.name',
+                        'desc'=>'street.name DESC',
+                    ),
+                    '*',
+                ),
+            ),
+        ));
+    }
+
+    /**
+     * Generate next permutation of array
+     * @param $p array
+     * @param $size
+     * @return bool
+     */
+    private function __nextPermutation(&$p, $size) {
+        // slide down the array looking for where we're smaller than the next guy
+        for ($i = $size - 1; $p[$i] >= $p[$i+1]; --$i) { }
+
+        // if this doesn't occur, we've finished our permutations
+        // the array is reversed: (1, 2, 3, 4) => (4, 3, 2, 1)
+        if ($i == -1) { return false; }
+
+        // slide down the array looking for a bigger number than what we found before
+        for ($j = $size; $p[$j] <= $p[$i]; --$j) { }
+
+        // swap them
+        $tmp = $p[$i]; $p[$i] = $p[$j]; $p[$j] = $tmp;
+
+        // now reverse the elements in between by swapping the ends
+        for (++$i, $j = $size; $i < $j; ++$i, --$j) {
+            $tmp = $p[$i]; $p[$i] = $p[$j]; $p[$j] = $tmp;
+        }
+
+        return true;
+    }
 }

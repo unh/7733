@@ -27,9 +27,17 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+        $model=new Contact('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Contact'])) {
+            $model->attributes=$_GET['Contact'];
+        }
+        else {
+            $model->last_name = -1;
+        }
+		$this->render('index', array(
+            'model' => $model,
+        ));
 	}
 
 	/**
